@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baccarat Pattern Predictor</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+    .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    h2 { text-align: center; }
+    textarea { width: 100%; height: 100px; padding: 10px; font-size: 16px; }
+    button { padding: 10px 20px; margin-top: 10px; font-size: 16px; cursor: pointer; }
+    .result { margin-top: 20px; font-size: 18px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Baccarat Pattern Predictor</h2>
+    <p>Enter game results (use "B" for Banker, "P" for Player, separated by spaces):</p>
+    <textarea id="input"></textarea>
+    <button onclick="predict()">Predict Next</button>
+    <div class="result" id="output"></div>
+  </div>
+
+  <script>
+    function predict() {
+      const input = document.getElementById('input').value.trim().toUpperCase();
+      const results = input.split(/\s+/);
+      const output = document.getElementById('output');
+
+      if (results.length < 3) {
+        output.innerText = "Please enter at least 3 results.";
+        return;
+      }
+
+      const last = results[results.length - 1];
+      const secondLast = results[results.length - 2];
+      const thirdLast = results[results.length - 3];
+
+      let prediction = "Unclear pattern";
+      if (last === secondLast && secondLast === thirdLast) {
+        prediction = `Possible streak: go with ${last}`;
+      } else if (last !== secondLast && secondLast !== thirdLast && last !== thirdLast) {
+        prediction = "Alternating detected, expect: " + (last === "B" ? "P" : "B");
+      } else if (last !== secondLast) {
+        prediction = `Possible 1-1 pattern, expect: ${secondLast}`;
+      } else if (last === secondLast) {
+        prediction = `Possible double pattern, expect switch to: ${last === "B" ? "P" : "B"}`;
+      }
+
+      output.innerText = prediction;
+    }
+  </script>
+</body>
+</html>
